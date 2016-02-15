@@ -50,7 +50,28 @@ module Associatable
 
   def belongs_to(name, options = {})
     options = BelongsToOptions(name, options)
+    assoc_options[name] = options
+    define_method(name) do
+      foreign_key_value = self.send("#{options.foreign_key}")
+      target_class = options.model_class
+      target_class.where(options.primary_key => foreign_key_value).first
+    end
   end
+
+  def has_many(name, options = {})
+  options = HasManyOptions.new(name, self.to_s, options)
+  define_method(name) do
+    foreign_key_value = self.send("#{options.primary_key}")
+    target_class = options.model_class
+    target_class.where(options.foreign_key => foreign_key_value)
+    end
+  end
+
+  def assoc_options
+    @assoc_options ||= {}
+    @assoc_options
+  end
+
 
 end
 
