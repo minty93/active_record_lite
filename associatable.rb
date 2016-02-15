@@ -1,5 +1,7 @@
 require_relative 'searchable'
 require 'active_support/inflector'
+require 'byebug'
+
 
 
 class AssocOptions
@@ -69,7 +71,6 @@ module Associatable
 
   def assoc_options
     @assoc_options ||= {}
-    @assoc_options
   end
 
 
